@@ -205,3 +205,123 @@
      range in logarithmic time.
 */
 
+/*
+   C. Number of Minimums on a Segment (Minimum on Segment with Count of Minimum Elements)
+   -----------------------------------------------------------------------------
+
+   This problem extends the concept of the segment tree to not only find the minimum 
+   value on a segment but also count how many times that minimum value appears in the 
+   segment.
+
+   The Segment Tree Structure:
+   ---------------------------
+   Each node in the segment tree will now store two pieces of information:
+   1. The minimum value in the corresponding segment.
+   2. The number of times this minimum value appears in the segment.
+
+   To build the tree, we initialize the leaf nodes with each element of the array. 
+   Each internal node stores the minimum value of its two children, and if both 
+   children have the same minimum value, we sum their counts. If the minimum value 
+   differs, we select the minimum value and the corresponding count.
+
+   Example:
+   Let's take an example array:
+
+   Array: [5, 2, 7, 3, 3, 6]
+   Index:  0  1  2  3  4  5
+
+   Visual Representation of Segment Tree (Minimum and Count):
+
+                              [0, 5] => Min = 2, Count = 1
+                             /                             \
+                 [0, 2] => Min = 2, Count = 1       [3, 5] => Min = 3, Count = 2
+                 /                \                         /                 \
+       [0, 1] => Min = 2, Count = 1   [2] => Min = 7, Count = 1     [3, 4] => Min = 3, Count = 2  [5] => Min = 6, Count = 1
+        /   \                                                                         
+    [0] => Min = 5, Count = 1   [1] => Min = 2, Count = 1       [3] => Min = 3, Count = 1   [4] => Min = 3, Count = 1
+
+   1. The root node stores the minimum value in the entire array (2) and the count of 
+      that minimum value (1 in this case).
+   2. For the left subtree [0, 2], the minimum value is 2, which appears once.
+   3. For the right subtree [3, 5], the minimum value is 3, which appears twice.
+
+   Queries:
+   --------
+   Let's consider a query to find the minimum and its count in the range [1, 4). 
+   This means we are interested in the subarray [2, 7, 3].
+
+   - The segment tree will check the nodes corresponding to this range.
+   - It will first look at the left subtree [1, 2] (which has the minimum 2 with count 1).
+   - Then, it will consider the right subtree [3, 3], which has the minimum value 3 with count 1.
+   - The result of this query is min(2, 3) = 2 with count 1.
+
+   Updates:
+   --------
+   If an element in the array is updated, we need to propagate this change up the 
+   tree, just like in the previous segment tree problems. However, in addition to 
+   updating the minimum value, we also need to update the count of the minimum 
+   value in the affected nodes.
+
+   For example, if the element at index 2 is updated from 7 to 1, we would update 
+   the leaf node corresponding to index 2 and then recalculate the internal nodes 
+   that depend on this change. This ensures that the tree correctly reflects the 
+   new minimum and count for all affected segments.
+
+   Time Complexity:
+   ----------------
+   - Query: O(log n)
+   - Update: O(log n)
+   These operations are efficient because the segment tree has a height of log n, 
+   and only one path from the root to a leaf is affected during an update or query.
+
+   Example for Update:
+   -------------------
+   Array before update: [5, 2, 7, 3, 3, 6]
+   Update: set a[2] = 1
+
+   Segment Tree before update:
+                              [0, 5] => Min = 2, Count = 1
+                             /                             \
+                 [0, 2] => Min = 2, Count = 1       [3, 5] => Min = 3, Count = 2
+                 /                \                         /                 \
+       [0, 1] => Min = 2, Count = 1   [2] => Min = 7, Count = 1     [3, 4] => Min = 3, Count = 2  [5] => Min = 6, Count = 1
+        /   \                                                                         
+    [0] => Min = 5, Count = 1   [1] => Min = 2, Count = 1       [3] => Min = 3, Count = 1   [4] => Min = 3, Count = 1
+
+   After update:
+                              [0, 5] => Min = 1, Count = 1
+                             /                             \
+                 [0, 2] => Min = 1, Count = 1       [3, 5] => Min = 3, Count = 2
+                 /                \                         /                 \
+       [0, 1] => Min = 2, Count = 1   [2] => Min = 1, Count = 1     [3, 4] => Min = 3, Count = 2  [5] => Min = 6, Count = 1
+        /   \                                                                         
+    [0] => Min = 5, Count = 1   [1] => Min = 2, Count = 1       [3] => Min = 3, Count = 1   [4] => Min = 3, Count = 1
+
+   As you can see, the tree reflects the change at index 2 and updates the minimum 
+   and count accordingly.
+
+   Input/Output Format:
+   --------------------
+   - Input:
+     - First line: two integers n and m (1 ≤ n, m ≤ 100000) representing the size 
+       of the array and the number of operations.
+     - Second line: n integers ai (0 ≤ ai ≤ 10^9) representing the array elements.
+     - Next m lines: each line describes an operation:
+       - "1 i v": Update the element at index i to value v.
+       - "2 l r": Find the minimum value and the count of that minimum value in the 
+         range [l, r).
+
+   - Output:
+     - For each "2 l r" query, output two integers: the minimum value and the count 
+       of that value in the range [l, r).
+
+   Summary:
+   --------
+   - Segment trees are a powerful data structure that can efficiently solve range 
+     queries and handle point updates.
+   - By extending the tree nodes to store both the minimum value and its count, we 
+     can answer more complex queries in logarithmic time.
+   - Both query and update operations take O(log n) time due to the tree's balanced 
+     nature.
+*/
+
