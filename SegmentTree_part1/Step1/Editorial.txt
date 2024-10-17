@@ -1,0 +1,97 @@
+/*
+   A.Segment Tree Explanation (Sum on a Segment)
+   ------------------------------------------
+
+   A Segment Tree is a data structure that allows us to efficiently perform 
+   range-based queries and updates on an array. It is especially useful for problems 
+   like finding the sum of elements in a given range and updating elements at 
+   specific indices.
+
+   The basic idea behind a segment tree is to build a binary tree where each node 
+   represents the sum of a segment (range) of the array. By doing so, we can answer 
+   range queries and apply updates in logarithmic time.
+
+   Example:
+   Let's consider the following array:
+
+   Array: [1, 3, 5, 7, 9, 11]
+   Index:  0  1  2  3  4  5
+
+   Visual Representation of the Segment Tree:
+   
+                              [1, 3, 5, 7, 9, 11] => Sum = 36
+                             /                     \
+               [1, 3, 5] => Sum = 9          [7, 9, 11] => Sum = 27
+               /          \                      /           \
+        [1, 3] => Sum = 4   [5] => Sum = 5  [7, 9] => Sum = 16   [11] => Sum = 11
+         /   \                               /   \
+     [1]     [3]                        [7]       [9]
+
+   The leaf nodes represent the individual elements of the array. Each internal 
+   node contains the sum of its two children, representing the sum over a segment 
+   of the array.
+
+   How Queries Work:
+   -----------------
+   Suppose we want to find the sum of elements from index 1 to 4 (inclusive of 1, 
+   exclusive of 4) in the array [1, 3, 5, 7, 9, 11]. This range corresponds to 
+   [3, 5, 7] in the array. Let's see how the segment tree helps:
+
+   1. The query asks for the sum of the range [1, 4), i.e., indices 1, 2, 3.
+   2. We begin at the root node, which covers the entire array. Since the query 
+      only partially overlaps with this node's range, we need to check both children.
+   3. For the left child (range [0, 2]), only part of this range overlaps with 
+      the query range. We need to go deeper.
+   4. For the right child (range [3, 5]), the query completely overlaps with 
+      the left part (range [3, 4]). We can take its value directly.
+   5. The result is the sum of the overlapping parts, which is 3 + 5 + 7 = 15.
+
+   Updates in Segment Tree:
+   ------------------------
+   When we want to update an element in the array (for example, change the value at 
+   index 2 from 5 to 6), we need to propagate this change up the tree.
+
+   Steps:
+   1. Update the leaf node corresponding to index 2.
+   2. Recalculate the sum at each internal node that is affected by the change.
+   3. The update is complete after propagating the change up to the root.
+
+   Time Complexity:
+   ----------------
+   Both the query and update operations take O(log n) time, where n is the size of 
+   the array. This is because the height of the segment tree is log n, and we 
+   traverse only one path from the root to a leaf for updates and queries.
+
+   Example for Update:
+   -------------------
+   Array before update: [1, 3, 5, 7, 9, 11]
+   Update: set a[2] = 6
+
+   Segment Tree before update:
+                              [1, 3, 5, 7, 9, 11] => Sum = 36
+                             /                     \
+               [1, 3, 5] => Sum = 9          [7, 9, 11] => Sum = 27
+               /          \                      /           \
+        [1, 3] => Sum = 4   [5] => Sum = 5  [7, 9] => Sum = 16   [11] => Sum = 11
+         /   \                               /   \
+     [1]     [3]                        [7]       [9]
+
+   After update:
+                              [1, 3, 6, 7, 9, 11] => Sum = 37
+                             /                     \
+               [1, 3, 6] => Sum = 10         [7, 9, 11] => Sum = 27
+               /          \                      /           \
+        [1, 3] => Sum = 4   [6] => Sum = 6  [7, 9] => Sum = 16   [11] => Sum = 11
+         /   \                               /   \
+     [1]     [3]                        [7]       [9]
+
+   As you can see, only the affected nodes are updated, making this an efficient
+   process.
+
+   Summary:
+   --------
+   - Segment trees are used to efficiently perform range queries and updates.
+   - They allow us to handle queries like sum, min, max, etc., over a range.
+   - Time complexity for both updates and queries is O(log n), making segment 
+     trees ideal for large arrays.
+*/
